@@ -10,7 +10,8 @@ namespace StockApplication.Controllers
 {
     public class WalletController : ApiController
     {
-		List<Wallet> Wallets = new List<Wallet>()
+		//Dummy data to test api with in fiddler
+		static List<Wallet> Wallets = new List<Wallet>()
 		{
 			new Wallet {Id = 1,Customerid = 1,Balance = 100, IsActive = true,
 						Customer = new Customer(){Id = 1,FirstName = "Jeremy", LastName = "Ariche", IsActive = true, Email = "Jeremy.Ariche@email.com"}},
@@ -21,12 +22,13 @@ namespace StockApplication.Controllers
 			new Wallet {Id = 4,Customerid = 4,Balance = 400, IsActive = true,
 						Customer = new Customer(){Id = 4,FirstName = "Jill", LastName = "Ariche", IsActive = true, Email = "Jill.Ariche@email.com"}},
 		};
-		// GET: api/Wallet
-		/*public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }*/
 
+
+		// GET: api/Wallet
+		public IEnumerable<Wallet> Get()
+        {
+            return Wallets;
+        }
 
 		// GET: api/Wallet/5
 		// GET Wallet info for current logged in customer
@@ -34,31 +36,32 @@ namespace StockApplication.Controllers
 		{
 			//var wallet = Wallets.Where(w => w.Id == id && w.Customerid == {something}).SingleOrDefault();
 			var wallet = Wallets.Where(w => w.Id == id).SingleOrDefault();
-            return wallet;
+			if (wallet == null)
+			{
+				throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+			}
+			return wallet;
         }
 
         // POST: api/Wallet
 		// POST a new wallet if it does not exist for current logged in customer
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Wallet wallet)
         {
-			
+			Wallets.Add(wallet);
         }
 
 		// POST: api/Wallet
 		// POST a new transaction corresponding to wallet operations for current logged in customer
-		public void Post([FromBody]string value,int x)
+		public void Post(int id,[FromBody]Transaction transaction)
 		{
-
+			if (id > 0) Wallets[id-1].Transactions.Add(transaction);
 		}
 
 		// PUT: api/Wallet/5
-		public void Put(int id, [FromBody]string value)
+		// PUT: Update the wallet's balance
+		public void Put(int id, [FromBody]decimal update)
         {
+			if(id > 0) Wallets[id-1].Balance += update;
         }
-
-        // DELETE: api/Wallet/5
-        /*public void Delete(int id)
-        {
-        }*/
-    }
+	}
 }

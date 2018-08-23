@@ -7,10 +7,6 @@ namespace StockApplication.Models
 {
 	public class Wallet
 	{
-		
-		private Customer _customer = new Customer();
-		private List<Transaction> _transactions = new List<Transaction>();
-
 		//Wallet Id
 		public int Id { get; set; }
 
@@ -24,41 +20,33 @@ namespace StockApplication.Models
 		public bool IsActive { get; set; }
 
 		//Customer details for this wallet
-		public Customer Customer
-		{
-			get { return _customer; }
-			set { }
-		}
+		public Customer Customer { get; set; }
 
 		//Transactions that occured for this wallet
-		public List<Transaction> Transactions
+		public List<Transaction> Transactions { get; set; }
+
+		public Wallet()
 		{
-			get { return _transactions; }
-			set { }
+			Customer = new Customer();
+			Transactions = new List<Transaction>();
 		}
 	}
 
 	//Delete this from wallet Class once we gain access to customer and transaction class from Lance and Andrew
 	public class Customer
 	{
-		private Wallet _wallet = new Wallet();
-		private List<Share> _shares = new List<Share>();
-
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public bool IsActive { get; set; }
 		public string Email { get; set; }
 
-		public Wallet MyWallet
+		public Wallet MyWallet { get; set; }
+		public List<Share> Shares { get; set; }
+
+		public Customer()
 		{
-			get { return _wallet; }
-			set { }
-		}
-		public List<Share> Shares
-		{
-			get { return _shares; }
-			set { }
+			this.Shares = new List<Share>();
 		}
 	}
 	public class Transaction
