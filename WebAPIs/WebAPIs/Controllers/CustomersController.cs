@@ -11,18 +11,18 @@ namespace WebAPIs.Controllers
     public class CustomersController : ApiController
     {
         //creates a list of customers to use in the methods
-        private List<Customer> _customers;
+        private Repositories.CustomerRepo _customerRepo = new Repositories.CustomerRepo();
 
         // GET: api/Customers
         public IEnumerable<Customer> Get()
-        {
-            return _customers;
+        { 
+            return _customerRepo.Customers.ToList();
         }
 
         // GET: api/Customers/5
         public Customer Get(int id)
         {
-            var customer = _customers.ToList().Where(c => c.Id == id).First();
+            var customer = _customerRepo.Customers.ToList().Where(c => c.Id == id).First();
             return customer;
         }
 
@@ -34,7 +34,8 @@ namespace WebAPIs.Controllers
         // PUT: api/Customers/5
         public void Put([FromBody]Customer customer)
         {
-            _customers.Add(customer);
+            _customerRepo.Customers.Add(customer);
+            _customerRepo.SaveChanges();
         }
 
         // DELETE: api/Customers/5

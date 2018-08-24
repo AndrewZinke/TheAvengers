@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace WebAPIs.Models
+namespace WebAPIStuff.Models
 {
     public class Wallet
     {
